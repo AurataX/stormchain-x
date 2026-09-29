@@ -2,7 +2,15 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from app.api.v1.endpoints import assets, graph, health, observations, scenarios, simulation
+from app.api.v1.endpoints import (
+    assets,
+    graph,
+    health,
+    observations,
+    recovery,
+    scenarios,
+    simulation,
+)
 from app.core.config import Settings
 from app.core.database import connect
 from app.core.errors import register_error_handlers
@@ -32,6 +40,7 @@ def create_app(settings: Settings | None = None):
         scenarios.router,
         graph.router,
         simulation.router,
+        recovery.router,
     ):
         application.include_router(router)
     return application
