@@ -30,6 +30,9 @@ version recommendations forward automatically.
 
 No queues, Redis, LLM, or extra geospatial libraries in Phase 1.
 
+Phase 3 adds OR-Tools CP-SAT (pinned in requirements; it pulls in NumPy/pandas
+transitively, superseding the no-NumPy note below for the optimizer only).
+
 Phase 2 adds NetworkX 3.7 and a bounded standard-library Monte Carlo engine.
 Snapshots and outputs are stored in `simulation_runs`; no worker service,
 NumPy, or optimizer dependency is introduced. See [engine semantics](phase-2-engine.md).

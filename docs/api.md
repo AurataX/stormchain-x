@@ -28,6 +28,20 @@ Non-road access reports return 422. Physical damage and passability are separate
 Raw inventory assets expose `assessment_status: NOT_COMPUTED`. Use the graph
 endpoint for scenario/time-specific fused assessments. Scenario creation and
 recovery endpoints are not implemented.
+Phase 3:
+
+| Method | Path | Behavior |
+|---|---|---|
+| POST | /api/v1/recovery/plans | Operator token; body scenario_id + optional past as_of; 201 new version |
+| GET | /api/v1/recovery/plans?scenario_id= | Versions newest first; `limit` 1–100 (default 20); 404 unknown scenario |
+| GET | /api/v1/recovery/plans/{uuid} | One saved plan; never recomputed |
+
+`plan_payload` holds `actions` (start/end hour, crew, cost), `solver` (status
+OPTIMAL/FEASIBLE/INFEASIBLE, objective, best_bound, gap), `unselected`,
+`verification_priority` and `assumptions`. `deterministic_rationale` holds the
+diff against the previous version, its fingerprint and the saved input snapshot.
+See [Phase 3 review](phase-3-review.md) for semantics.
+
 Read access is local demo access, not production tenant authorization.
 
 Phase 2:

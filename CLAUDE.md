@@ -8,9 +8,9 @@ Read [documentation index](docs/README.md), [system](docs/system.md),
 [deployment](docs/deployment.md).
 
 Do not mistake the aspirational source blueprint for implemented functionality.
-Phase 2 is now authorized. Wait for confirmation before Phase 3.
-The current implementation is Python backend through Phase 2; there is no
-frontend yet. Start from [current handoff](docs/phase-2-review.md), not old status messages.
+Phases 2, 3 and 4 are authorized. The current implementation is the Python backend
+through Phase 3 plus the Phase 4 console in `apps/web` (not yet browser-tested).
+Start from [current handoff](docs/phase-4-status.md), not old status messages.
 Use verification evidence, not previous assistant claims, to determine completion.
 
 Mandatory for Claude, Sol, Gemini, Codex, or any other model:

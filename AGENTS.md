@@ -5,9 +5,9 @@ Read [docs/README.md](docs/README.md), [system](docs/system.md),
 [design](docs/design/README.md) before edits. Original requirements remain in
 [arcitecture.md](docs/arcitecture.md) and [intial.md](docs/intial.md).
 
-Implement only the authorized phase. Phase 2 is authorized; Phase 3 requires confirmation.
-Current code includes the Python backend through Phase 2. Frontend is unbuilt
-(Phase 4); optimizer is unbuilt (Phase 3). Read [handoff](docs/phase-2-review.md).
+Implement only the authorized phase. Phases 2, 3 and 4 are authorized; Phase 5 is not.
+Current code includes the Python backend through Phase 3 and the Phase 4 console
+(`apps/web`, not yet browser-tested). Read [handoff](docs/phase-4-status.md).
 Update tasks and verification evidence after changes; never label planned work complete.
 Use Atelier structure/design/clean-code principles and Ponytail minimalism.
 Keep every authored source file at most 250 whitespace-separated words;

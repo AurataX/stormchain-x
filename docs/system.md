@@ -10,7 +10,7 @@ schedule → new observation → revised plan → traceable comparison.
 Phase 1 delivers persistence, synthetic fixtures, infrastructure relationships,
 observation ingestion, scenario retrieval, database health, and tests.
 Phase 2 adds evidence fusion, typed graph/access assessment, seeded cascades,
-and persisted run snapshots. Recovery recommendations remain Phase 3 work.
+and persisted run snapshots. Recovery recommendations are Phase 3 (see [Phase 3 review](phase-3-review.md)).
 
 All entities use stable identifiers. Observations retain source, observation
 time, receipt time, and confidence. Missing evidence remains unknown.

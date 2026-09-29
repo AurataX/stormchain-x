@@ -23,7 +23,9 @@ Read in order:
     and [Phase 1 handoff](phase-1-handoff.md)
 17. [Phase 2 plan](phase-2-plan.md), [engine](phase-2-engine.md), and [runs](phase-2-runs.md)
 18. [Docker cleanup policy](docker-cleanup.md)
-19. [Current Phase 2 review and handoff](phase-2-review.md)
+19. [Phase 2 review and handoff](phase-2-review.md)
+20. [Phase 3 review and handoff](phase-3-review.md)
+21. [Current Phase 4 status](phase-4-status.md)
 
 `arcitecture.md` and `intial.md` are preserved original requirements.
 The user's latest authorized phase and this decision set resolve conflicts with
