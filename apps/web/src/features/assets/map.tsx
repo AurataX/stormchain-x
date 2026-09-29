@@ -5,7 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import type { Graph } from "@/lib/types";
 import { bounds, mapData } from "./map-data";
 import { select } from "./map-highlight";
-import { addLayers, baseStyle } from "./map-layers";
+import { addLayers } from "./map-layers";
+import { baseStyle, watchBasemap } from "./map-style";
 
 maplibregl.setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
 
@@ -23,13 +24,15 @@ export function AssetMap({ graph, planned, selected, onSelect }: Props) {
   pick.current = onSelect;
   const [ready, setReady] = useState(false);
   const fitted = useRef(false);
+  const [offline, setOffline] = useState(false);
 
   useEffect(() => {
     const m = new maplibregl.Map({
       container: box.current!, center: [83.315, 17.76], zoom: 11.6,
-      attributionControl: false, style: baseStyle(),
+      attributionControl: { compact: true }, style: baseStyle(),
     });
     map.current = m;
+    watchBasemap(m, () => setOffline(true));
     m.on("load", () => {
       addLayers(m);
       m.on("click", (event) => {
@@ -55,7 +58,10 @@ export function AssetMap({ graph, planned, selected, onSelect }: Props) {
   }, [graph, planned, selected, ready]);
 
   return (
-    <div ref={box} className="map" role="application"
-      aria-label="Asset map of synthetic geometry. Use the asset list for keyboard access." />
+    <>
+      <div ref={box} className="map" role="application"
+        aria-label="Asset map of synthetic geometry. Use the asset list for keyboard access." />
+      {offline && <p className="basemap-note" role="status">Basemap unavailable; showing synthetic geometry only.</p>}
+    </>
   );
 }

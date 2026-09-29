@@ -3,35 +3,32 @@ import { useState } from "react";
 import { AssetMap } from "@/features/assets/map";
 import { Legend } from "@/features/assets/legend";
 import { AssetTable } from "@/features/assets/asset-table";
-import { Inspector } from "@/features/assets/inspector";
-import { EvidenceForm } from "@/features/observations/evidence-form";
 import { PlanPanel } from "@/features/recovery/plan-panel";
 import { Constraints } from "./constraints";
 import { Header } from "./header";
-import { SCENARIO, useConsole } from "./use-console";
-
-const TABS = ["map", "plan", "evidence"] as const;
+import { Kpis } from "./kpis";
+import { EvidencePanel } from "./evidence-panel";
+import { Tabs, type Tab } from "./tabs";
+import { useConsole } from "./use-console";
 
 export function Console() {
   const c = useConsole();
-  const [tab, setTab] = useState<(typeof TABS)[number]>("map");
+  const [tab, setTab] = useState<Tab>("map");
   const graph = c.graph.data;
-  const asset = graph?.assets.find((a) => a.id === c.selected) ?? null;
   return (
     <div className="console" data-tab={tab}>
       <Header asOf={c.asOf} onAsOf={c.setAsOf} stale={c.stale}
         planLabel={c.latest ? `Plan v${c.latest.version}` : "No plan yet"} />
-      <nav className="tabs" role="tablist" aria-label="Views">
-        {TABS.map((name) => (
-          <button key={name} role="tab" aria-selected={tab === name} onClick={() => setTab(name)}>{name}</button>
-        ))}
-      </nav>
+      <Tabs tab={tab} onTab={setTab} />
       {c.graph.error && (
         <p className="banner tone-failed" role="alert">
           Disconnected: {c.graph.error} <button className="link" onClick={c.graph.reload}>Retry</button>
         </p>
       )}
       <main>
+        <div className="panel kpis" data-panel="map">
+          <Kpis plan={c.latest} scenario={c.scenario.data} graph={graph} stale={c.stale} />
+        </div>
         <div className="panel mapbox" data-panel="map">
           {graph ? (
             <>
@@ -42,16 +39,16 @@ export function Console() {
             <div className="map card">{c.graph.loading ? "Loading map…" : "Map unavailable."}</div>
           )}
         </div>
-        <aside className="panel rail" data-panel="map">
-          <Constraints scenario={c.scenario.data} />
+        <div className="panel assets" data-panel="map">
           {graph && <AssetTable graph={graph} selected={c.selected} onSelect={c.setSelected} />}
-        </aside>
+        </div>
+        <div className="panel scenario" data-panel="map">
+          <Constraints scenario={c.scenario.data} />
+        </div>
         <div className="panel evidence" data-panel="evidence">
-          {graph && c.selected && (
-            <Inspector id={c.selected} graph={graph} scenario={SCENARIO} refresh={c.refresh}
-              action={c.latest?.plan_payload.actions.find((a) => a.id === c.selected)} />
-          )}
-          <EvidenceForm asset={asset} scenario={SCENARIO} sources={c.sources.data ?? []} onSaved={c.saved} />
+          <EvidencePanel graph={graph} selected={c.selected} refresh={c.refresh} onSaved={c.saved}
+            sources={c.sources.data ?? []}
+            action={c.latest?.plan_payload.actions.find((x) => x.id === c.selected)} />
         </div>
         <div className="panel plan" data-panel="plan">
           <PlanPanel plans={c.plans.data ?? []} scenario={c.scenario.data} stale={c.stale}

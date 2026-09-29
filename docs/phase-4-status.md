@@ -19,8 +19,13 @@ Anyone who can open the console can write: local demo only, not production auth.
 
 ## Behavior
 
-- Map: local synthetic geometry only, no external basemap; colors from tokens, planned
+- Map: synthetic geometry over CARTO raster tiles (dark/light by theme; © OpenStreetMap
+  contributors © CARTO, attribution shown). Tiles need internet; on failure a notice is shown and the
+  geometry still draws. Colors from tokens, planned
   repairs ringed, selection ring, asset table as the keyboard alternative.
+- Layout: dashboard. KPI strip (plan, budget, duration, asset counts), map + plan, assets and
+  evidence cards, constraints row; one column with Overview/Plan/Evidence tabs below 1100px.
+  Layout not yet checked in a browser at 768/360px.
 - Inspector, evidence form (refreshes graph, marks plan stale), Generate / Recalculate,
   solver status (non-OPTIMAL labelled), verification list (heuristic label), version
   comparison, assumptions, loading/empty/error/disconnected states.

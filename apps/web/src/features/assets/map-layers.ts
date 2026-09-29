@@ -1,13 +1,6 @@
 import type * as maplibregl from "maplibre-gl";
 import { addHighlights } from "./map-highlight";
-
-export const css = (name: string) =>
-  getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-
-export function baseStyle(): maplibregl.StyleSpecification {
-  const paint = { "background-color": css("--canvas") };
-  return { version: 8, sources: {}, layers: [{ id: "bg", type: "background", paint }] };
-}
+import { css } from "./map-style";
 
 export function addLayers(map: maplibregl.Map) {
   const [ok, part, bad, unknown] = ["--operational", "--partial", "--failed", "--unknown"].map(css);

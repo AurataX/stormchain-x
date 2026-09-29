@@ -3,6 +3,8 @@ import "./tokens.css";
 import "./layout.css";
 import "./controls.css";
 import "./data.css";
+import "./dashboard.css";
+import "./cards.css";
 
 export const metadata: Metadata = {
   title: "STORMCHAIN-X console",

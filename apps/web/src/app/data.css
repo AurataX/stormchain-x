@@ -19,3 +19,7 @@ details { margin-top: var(--s3); }
 .dot-failed { background: var(--failed); }
 .dot-unknown { border: 2px solid var(--unknown); }
 .dot-plan { border: 2px solid var(--brand); }
+.basemap-note {
+  position: absolute; top: var(--s3); left: var(--s3); margin: 0; padding: var(--s1) var(--s3);
+  background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-size: 12px;
+}

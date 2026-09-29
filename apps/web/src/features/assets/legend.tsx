@@ -14,7 +14,7 @@ export function Legend() {
         </li>
       ))}
       <li><span className="dot dot-plan" aria-hidden /> Planned repair</li>
-      <li className="muted">Dashed line: dependency. Synthetic geometry, no basemap.</li>
+      <li className="muted">Dashed line: dependency. Assets and roads are synthetic; positions are illustrative.</li>
     </ul>
   );
 }

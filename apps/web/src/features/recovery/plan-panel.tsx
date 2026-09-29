@@ -1,6 +1,7 @@
 import { money } from "@/lib/health";
 import type { Plan } from "@/lib/plan-types";
 import type { Scenario } from "@/lib/types";
+import { ActionsTable } from "./actions-table";
 import { Compare } from "./compare";
 import { VerifyList } from "./verify-list";
 
@@ -13,7 +14,7 @@ export function PlanPanel({ plans, scenario, stale, busy, error, onGenerate, onS
   const plan = plans[0];
   const solver = plan?.plan_payload.solver;
   return (
-    <section aria-label="Recovery plan" className="card">
+    <section aria-label="Recovery plan" className="card stack">
       <div className="row">
         <h2>{plan ? `Plan v${plan.version}` : "Recovery plan"}</h2>
         <button className="primary" onClick={onGenerate} disabled={busy}>
@@ -25,24 +26,14 @@ export function PlanPanel({ plans, scenario, stale, busy, error, onGenerate, onS
       {!plan && !error && <p>No plan yet. Generate one from current evidence.</p>}
       {plan && solver && (
         <>
-          <p>
+          <p className="muted">
             Solver {solver.status}
             {solver.status !== "OPTIMAL" && " (not proven optimal)"}
             {solver.gap !== null && `, gap ${(solver.gap * 100).toFixed(1)}%`}
-          </p>
-          <p>
-            {money(plan.total_cost_cents)} of {scenario ? money(scenario.budget_cents) : "—"} budget,{" "}
+            {" · "}{money(plan.total_cost_cents)} of {scenario ? money(scenario.budget_cents) : "—"} budget,{" "}
             {plan.duration_minutes / 60} h total
           </p>
-          <ol>
-            {plan.plan_payload.actions.map((a) => (
-              <li key={a.id}>
-                <button className="link" onClick={() => onSelect(a.id)}>{a.id}</button>
-                {" "}h{a.start_hour}–{a.end_hour}, {a.crew_type}, {money(a.cost_cents)}
-              </li>
-            ))}
-          </ol>
-          {plan.plan_payload.actions.length === 0 && <p>No repairs selected under current evidence.</p>}
+          <ActionsTable actions={plan.plan_payload.actions} onSelect={onSelect} />
           <VerifyList items={plan.plan_payload.verification_priority} onSelect={onSelect} />
           <details>
             <summary>Compare with previous version</summary>
