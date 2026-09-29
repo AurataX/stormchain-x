@@ -1,0 +1,6 @@
+CREATE EXTENSION IF NOT EXISTS postgis;
+
+ALTER TABLE assets ADD COLUMN IF NOT EXISTS geom geometry(Geometry, 4326)
+GENERATED ALWAYS AS (ST_SetSRID(ST_GeomFromGeoJSON(geometry::text), 4326)) STORED;
+
+CREATE INDEX IF NOT EXISTS ix_assets_geom ON assets USING GIST (geom);

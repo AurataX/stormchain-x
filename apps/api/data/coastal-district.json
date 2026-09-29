@@ -1,0 +1,486 @@
+{
+  "provenance": {
+    "kind": "SYNTHETIC",
+    "description": "Fictional assets near coastal India; no real asset inventory or disaster measurements.",
+    "clock": "2026-09-28T13:00:00+00:00",
+    "coordinates": "EPSG:4326, longitude then latitude"
+  },
+  "asset_types": [
+    {
+      "id": "substation",
+      "name": "Substation",
+      "category": "POWER",
+      "criticality_weight": 3
+    },
+    {
+      "id": "hospital",
+      "name": "Hospital",
+      "category": "HEALTHCARE",
+      "criticality_weight": 5
+    },
+    {
+      "id": "water",
+      "name": "Water plant",
+      "category": "WATER",
+      "criticality_weight": 3
+    },
+    {
+      "id": "telecom",
+      "name": "Telecom tower",
+      "category": "TELECOM",
+      "criticality_weight": 2
+    },
+    {
+      "id": "road",
+      "name": "Access road",
+      "category": "TRANSPORT",
+      "criticality_weight": 2
+    },
+    {
+      "id": "shelter",
+      "name": "Emergency shelter",
+      "category": "SHELTER",
+      "criticality_weight": 4
+    },
+    {
+      "id": "depot",
+      "name": "Response depot",
+      "category": "LOGISTICS",
+      "criticality_weight": 1
+    }
+  ],
+  "assets": [
+    {
+      "id": "depot",
+      "name": "Response Depot",
+      "type_id": "depot",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          83.28,
+          17.76
+        ]
+      },
+      "capacity_metrics": {},
+      "backup_systems": {},
+      "provenance": "SYNTHETIC"
+    },
+    {
+      "id": "substation-east",
+      "name": "East Substation",
+      "type_id": "substation",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          83.32,
+          17.75
+        ]
+      },
+      "capacity_metrics": {
+        "kw": 12000
+      },
+      "backup_systems": {},
+      "provenance": "SYNTHETIC"
+    },
+    {
+      "id": "hospital-central",
+      "name": "Central Hospital",
+      "type_id": "hospital",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          83.33,
+          17.73
+        ]
+      },
+      "capacity_metrics": {
+        "beds": 450
+      },
+      "backup_systems": {
+        "generator_hours": 12
+      },
+      "provenance": "SYNTHETIC"
+    },
+    {
+      "id": "hospital-north",
+      "name": "North Hospital",
+      "type_id": "hospital",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          83.31,
+          17.79
+        ]
+      },
+      "capacity_metrics": {
+        "beds": 120
+      },
+      "backup_systems": {
+        "generator_hours": 6
+      },
+      "provenance": "SYNTHETIC"
+    },
+    {
+      "id": "water-plant",
+      "name": "District Water Plant",
+      "type_id": "water",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          83.3,
+          17.74
+        ]
+      },
+      "capacity_metrics": {
+        "population_served": 28000
+      },
+      "backup_systems": {},
+      "provenance": "SYNTHETIC"
+    },
+    {
+      "id": "tower-east",
+      "name": "East Telecom Tower",
+      "type_id": "telecom",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          83.34,
+          17.75
+        ]
+      },
+      "capacity_metrics": {},
+      "backup_systems": {
+        "battery_hours": 4
+      },
+      "provenance": "SYNTHETIC"
+    },
+    {
+      "id": "shelter-coastal",
+      "name": "Coastal Shelter",
+      "type_id": "shelter",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          83.35,
+          17.72
+        ]
+      },
+      "capacity_metrics": {
+        "capacity": 600
+      },
+      "backup_systems": {},
+      "provenance": "SYNTHETIC"
+    },
+    {
+      "id": "road-main",
+      "name": "Highway 101 (synthetic)",
+      "type_id": "road",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            83.28,
+            17.76
+          ],
+          [
+            83.3,
+            17.755
+          ],
+          [
+            83.32,
+            17.75
+          ]
+        ]
+      },
+      "capacity_metrics": {},
+      "backup_systems": {},
+      "provenance": "SYNTHETIC"
+    },
+    {
+      "id": "road-coastal",
+      "name": "Coastal Access Road",
+      "type_id": "road",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            83.28,
+            17.76
+          ],
+          [
+            83.305,
+            17.745
+          ],
+          [
+            83.32,
+            17.75
+          ]
+        ]
+      },
+      "capacity_metrics": {},
+      "backup_systems": {},
+      "provenance": "SYNTHETIC"
+    },
+    {
+      "id": "road-north",
+      "name": "North Access Road",
+      "type_id": "road",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            83.28,
+            17.76
+          ],
+          [
+            83.3,
+            17.78
+          ],
+          [
+            83.31,
+            17.79
+          ]
+        ]
+      },
+      "capacity_metrics": {},
+      "backup_systems": {},
+      "provenance": "SYNTHETIC"
+    }
+  ],
+  "dependencies": [
+    {
+      "id": "edge-01",
+      "source_asset_id": "substation-east",
+      "target_asset_id": "hospital-central",
+      "dependency_type": "POWER",
+      "properties": {}
+    },
+    {
+      "id": "edge-02",
+      "source_asset_id": "substation-east",
+      "target_asset_id": "hospital-north",
+      "dependency_type": "POWER",
+      "properties": {}
+    },
+    {
+      "id": "edge-03",
+      "source_asset_id": "substation-east",
+      "target_asset_id": "water-plant",
+      "dependency_type": "POWER",
+      "properties": {}
+    },
+    {
+      "id": "edge-04",
+      "source_asset_id": "substation-east",
+      "target_asset_id": "tower-east",
+      "dependency_type": "POWER",
+      "properties": {}
+    },
+    {
+      "id": "edge-05",
+      "source_asset_id": "water-plant",
+      "target_asset_id": "hospital-central",
+      "dependency_type": "WATER",
+      "properties": {}
+    },
+    {
+      "id": "edge-06",
+      "source_asset_id": "water-plant",
+      "target_asset_id": "shelter-coastal",
+      "dependency_type": "WATER",
+      "properties": {}
+    },
+    {
+      "id": "edge-07",
+      "source_asset_id": "tower-east",
+      "target_asset_id": "hospital-central",
+      "dependency_type": "TELECOM",
+      "properties": {}
+    },
+    {
+      "id": "edge-08",
+      "source_asset_id": "depot",
+      "target_asset_id": "road-main",
+      "dependency_type": "ROAD_ACCESS",
+      "properties": {
+        "directed": true
+      }
+    },
+    {
+      "id": "edge-09",
+      "source_asset_id": "road-main",
+      "target_asset_id": "substation-east",
+      "dependency_type": "ROAD_ACCESS",
+      "properties": {
+        "directed": true
+      }
+    },
+    {
+      "id": "edge-10",
+      "source_asset_id": "depot",
+      "target_asset_id": "road-coastal",
+      "dependency_type": "ROAD_ACCESS",
+      "properties": {
+        "directed": true
+      }
+    },
+    {
+      "id": "edge-11",
+      "source_asset_id": "road-coastal",
+      "target_asset_id": "substation-east",
+      "dependency_type": "ROAD_ACCESS",
+      "properties": {
+        "directed": true
+      }
+    },
+    {
+      "id": "edge-12",
+      "source_asset_id": "road-main",
+      "target_asset_id": "hospital-central",
+      "dependency_type": "ROAD_ACCESS",
+      "properties": {
+        "directed": true
+      }
+    },
+    {
+      "id": "edge-13",
+      "source_asset_id": "road-coastal",
+      "target_asset_id": "water-plant",
+      "dependency_type": "ROAD_ACCESS",
+      "properties": {
+        "directed": true
+      }
+    },
+    {
+      "id": "edge-14",
+      "source_asset_id": "road-coastal",
+      "target_asset_id": "shelter-coastal",
+      "dependency_type": "ROAD_ACCESS",
+      "properties": {
+        "directed": true
+      }
+    },
+    {
+      "id": "edge-15",
+      "source_asset_id": "depot",
+      "target_asset_id": "road-north",
+      "dependency_type": "ROAD_ACCESS",
+      "properties": {
+        "directed": true
+      }
+    },
+    {
+      "id": "edge-16",
+      "source_asset_id": "road-north",
+      "target_asset_id": "hospital-north",
+      "dependency_type": "ROAD_ACCESS",
+      "properties": {
+        "directed": true
+      }
+    }
+  ],
+  "observation_sources": [
+    {
+      "id": "field",
+      "name": "Simulated field report",
+      "base_reliability": 0.9,
+      "half_life_seconds": 21600
+    },
+    {
+      "id": "telemetry",
+      "name": "Simulated telemetry",
+      "base_reliability": 0.65,
+      "half_life_seconds": 3600
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "cyclone-demo",
+      "name": "Synthetic Coastal District",
+      "description": "Category 4 scenario with incomplete and conflicting evidence. All observations are simulated.",
+      "cyclone_category": 4,
+      "communication_mode": "DEGRADED",
+      "budget_cents": 25000000,
+      "currency": "USD",
+      "available_crews": {
+        "electrical": 3,
+        "civil": 2,
+        "generator": 2
+      }
+    }
+  ],
+  "observations": [
+    {
+      "id": "00000000-0000-4000-8000-000000000001",
+      "scenario_id": "cyclone-demo",
+      "asset_id": "road-main",
+      "source_id": "field",
+      "observed_state": "OPERATIONAL",
+      "raw_confidence": 0.9,
+      "recorded_at": "2026-09-28T12:00:00+00:00",
+      "received_at": "2026-09-28T13:00:00+00:00",
+      "notes": "SIMULATED observation; not a real infrastructure report.",
+      "access_status": "OPEN"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000002",
+      "scenario_id": "cyclone-demo",
+      "asset_id": "substation-east",
+      "source_id": "field",
+      "observed_state": "FAILED",
+      "raw_confidence": 0.85,
+      "recorded_at": "2026-09-28T12:05:00+00:00",
+      "received_at": "2026-09-28T13:00:00+00:00",
+      "notes": "SIMULATED observation; not a real infrastructure report.",
+      "access_status": null
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000003",
+      "scenario_id": "cyclone-demo",
+      "asset_id": "substation-east",
+      "source_id": "telemetry",
+      "observed_state": "PARTIALLY_OPERATIONAL",
+      "raw_confidence": 0.35,
+      "recorded_at": "2026-09-28T12:10:00+00:00",
+      "received_at": "2026-09-28T13:00:00+00:00",
+      "notes": "SIMULATED observation; not a real infrastructure report.",
+      "access_status": null
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000004",
+      "scenario_id": "cyclone-demo",
+      "asset_id": "hospital-central",
+      "source_id": "field",
+      "observed_state": "PARTIALLY_OPERATIONAL",
+      "raw_confidence": 0.95,
+      "recorded_at": "2026-09-28T12:15:00+00:00",
+      "received_at": "2026-09-28T13:00:00+00:00",
+      "notes": "SIMULATED observation; not a real infrastructure report.",
+      "access_status": null
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000005",
+      "scenario_id": "cyclone-demo",
+      "asset_id": "road-coastal",
+      "source_id": "field",
+      "observed_state": "DAMAGED",
+      "raw_confidence": 0.8,
+      "recorded_at": "2026-09-28T12:20:00+00:00",
+      "received_at": "2026-09-28T13:00:00+00:00",
+      "notes": "SIMULATED: debris blocks access; not floodwater.",
+      "access_status": "BLOCKED"
+    },
+    {
+      "id": "00000000-0000-4000-8000-000000000006",
+      "scenario_id": "cyclone-demo",
+      "asset_id": "water-plant",
+      "source_id": "telemetry",
+      "observed_state": "UNKNOWN",
+      "raw_confidence": 0,
+      "recorded_at": "2026-09-28T12:25:00+00:00",
+      "received_at": "2026-09-28T13:00:00+00:00",
+      "notes": "SIMULATED observation; not a real infrastructure report.",
+      "access_status": null
+    }
+  ]
+}
