@@ -40,8 +40,8 @@ Evidence: [Phase 3 review](phase-3-review.md). PostgreSQL path for plans is unve
 - [ ] Finish real road overlay, keyboard navigation and contrast acceptance.
 - [x] Gemini briefing and read-only fact lookup over saved plan snapshots; citation IDs
   validated, console control and mock browser test complete. Live Gemini API key path checked.
-- [ ] Verify the Vertex AI path with a configured project/location and the real console
-  workflow; the current environment has neither Vertex setting.
+- [x] Verify Vertex AI using the existing project/ADC: saved-plan API and 360px
+  console workflow returned cited Gemini 3.5 Flash explanations locally.
 
 Evidence: [Phase 4 status](phase-4-status.md). The local real Google map passed
 viewport and marker checks; real road interactions and full keyboard checks remain.

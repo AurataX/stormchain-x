@@ -175,8 +175,9 @@ Anyone who can open the console can write: local demo only, not production auth.
   a structured explanation, and validates citation IDs against the selected facts.
   The console shows the answer and expandable saved facts; it does not alter plans.
 - The existing `GEMINI_API_KEY` path and `gemini-3.5-flash` default were retained.
-  Configured Vertex project/location take precedence. No Vertex project/location is
-  set in this process, so Vertex execution remains unverified. No GCP resource or
+  Configured Vertex project/location take precedence. The initial shell lacked
+  those settings; an explicit local test used the project in the read-only GCP
+  inventory and `global` location with existing ADC. No GCP resource or
   configuration was changed.
 - Live small synthetic Gemini API call returned `OK`. A live two-step lookup plus
   briefing initially returned 502 with a 600-token output cap. Using `low` thinking
@@ -184,8 +185,13 @@ Anyone who can open the console can write: local demo only, not production auth.
   a smoke call, not a semantic accuracy benchmark.
 - A live `TestClient` POST against the disposable SQLite demo and the existing
   Gemini key returned 200 for saved plan v2 with three valid citation IDs. It
-  correctly noted that the tested versions had identical actions. This checks
-  the complete local endpoint/model path, not Vertex AI or browser/model delivery.
+  correctly noted that the tested versions had identical actions.
+- Vertex AI direct generation and a full saved-plan `TestClient` request both
+  returned 200. The first Vertex answer confused missing prior-plan fields with
+  changes; both plan facts now use the same fields. A repeat Vertex request cited
+  `plan-diff` and correctly reported no action changes. A 360px live Chrome
+  session through the console proxy displayed a Vertex answer in the briefing
+  panel. This verifies one local workflow, not general answer accuracy.
 - Final `.venv/Scripts/python.exe scripts/verify.py`: 60 passed, 4 PostgreSQL
   skips; source-size, docs links, schema drift, Ruff lint and format passed.
   The first final-gate run found one 107-character line; shortening it restored
@@ -196,6 +202,6 @@ Anyone who can open the console can write: local demo only, not production auth.
   locks, console briefing/panel/layout/CSS and browser test, `.env.example`, API,
   local development, task and this status documentation. Existing light-map theme
   changes were already committed separately; no deployment was performed here.
-- Next: verify Vertex with a project and location, then test actual model responses
-  through the console. Real road-overlay interaction, complete keyboard navigation,
-  and measured contrast remain incomplete Phase 4 checks.
+- Next: real road-overlay interaction, complete keyboard navigation, and measured
+  contrast remain incomplete Phase 4 checks. PostgreSQL briefing path and cloud
+  deployment were not tested.
