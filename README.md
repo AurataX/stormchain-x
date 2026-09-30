@@ -25,6 +25,9 @@ synthetic. It is decision support, not a system that operates real infrastructur
   The dependency graph shows what fails when an upstream asset does.
 - **Schedules repairs.** A constraint solver picks feasible repair actions under
   a budget, crew limits by type (electrical, civil, generator), and road access.
+- **Shows it on a satellite map.** Google Maps hybrid imagery is the default, with a
+  Map/Satellite switch, shaded impact zones around each asset, and glowing roads.
+  With a vector Map ID the view tilts into 3D.
 - **Compares plans.** Every plan is saved with the evidence it used. After a new
   report, the console shows which actions were added, removed, or rescheduled.
 - **Explains the plan.** Gemini answers questions about a saved plan and cites

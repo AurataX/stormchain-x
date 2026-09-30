@@ -3,7 +3,10 @@ export const mapOptions = (): google.maps.MapOptions => ({
   mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID || "DEMO_MAP_ID",
   center: { lat: 17.76, lng: 83.315 }, zoom: 12, tilt: 60, heading: 20,
   colorScheme: google.maps.ColorScheme.LIGHT,
-  mapTypeControl: false, streetViewControl: false, fullscreenControl: false,
+  mapTypeId: "hybrid",
+  mapTypeControl: true,
+  mapTypeControlOptions: { mapTypeIds: ["hybrid", "roadmap"], position: google.maps.ControlPosition.BOTTOM_LEFT },
+  streetViewControl: false, fullscreenControl: false,
   gestureHandling: "cooperative",
 });
 
