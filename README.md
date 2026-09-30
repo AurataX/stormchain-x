@@ -8,53 +8,76 @@ cases visible while it maps infrastructure dependencies and schedules repairs
 within a budget and available crews. Add a report, recalculate, and compare the
 new plan with the saved one.
 
-**[Open the demo](https://stormchain-web-70530354318.asia-south1.run.app/)**
+**[Open the live demo](https://stormchain-web-70530354318.asia-south1.run.app/)**
 
-This is a hackathon decision-support prototype for the Cyclone Impact &
-Infrastructure Vulnerability Forecaster track. The district, assets, reports,
-costs, and repair times are synthetic. It does not operate real infrastructure.
+Built by team Vyntra for the Cyclone Impact & Infrastructure Vulnerability
+Forecaster track. The district, assets, reports, costs, and repair times are
+synthetic. It is decision support, not a system that operates real infrastructure.
+
+## What it does
+
+- **Keeps uncertainty visible.** An asset with no report is *unknown*, never
+  assumed destroyed. Each asset shows its status, confidence, and the evidence
+  behind it.
+- **Fuses conflicting evidence.** Reports are weighted by source reliability,
+  the reporter's confidence, and age, so a stale or weak report counts for less.
+- **Follows dependencies.** A hospital depends on power, water, and road access.
+  The dependency graph shows what fails when an upstream asset does.
+- **Schedules repairs.** A constraint solver picks feasible repair actions under
+  a budget, crew limits by type (electrical, civil, generator), and road access.
+- **Compares plans.** Every plan is saved with the evidence it used. After a new
+  report, the console shows which actions were added, removed, or rescheduled.
+- **Explains the plan.** Gemini answers questions about a saved plan and cites
+  the stored records behind its answer.
 
 ## Try it
 
 1. Select an asset on the map. Inspect its observations, confidence, and
-   dependencies. Missing evidence stays unknown.
+   dependencies.
 2. Generate a recovery plan. Check the chosen actions, budget, crews, road
    prerequisites, and solver status.
 3. Report a blocked **Highway 101 (synthetic)** and recalculate. The comparison
-   shows any added, removed, or rescheduled actions. The result comes from the
-   saved evidence and solver, so a change is not guaranteed.
-4. Ask Gemini about the plan. Open **Saved facts cited** to inspect the records
-   behind its answer.
+   shows what changed. The result comes from the saved evidence and solver, so a
+   change is not guaranteed.
+4. Ask Gemini why the plan looks the way it does. Open **Saved facts cited** to
+   see the records behind the answer.
 
-See the [demo guide](docs/demo.md) for a five-minute walkthrough.
+The scenario has ten synthetic assets (hospitals, shelters, a water plant,
+substations, a communications tower, roads, a depot), a $250,000 budget,
+degraded communications, and three electrical, two civil, and two generator
+crews.
 
-## Architecture
+## How it works
 
 ```mermaid
 flowchart LR
   Browser[Next.js console and Google Maps] --> Proxy[Same-origin proxy]
   Proxy --> API[FastAPI]
-  API --> DB[(SQLite locally or PostgreSQL/PostGIS)]
+  API --> DB[(SQLite or PostgreSQL/PostGIS)]
   API --> Fusion[Evidence fusion]
   Fusion --> Graph[Dependency and access graph]
   Graph --> Cascade[Seeded cascade simulation]
   Graph --> Planner[OR-Tools CP-SAT scheduler]
   Planner --> DB
   DB --> Facts[Saved plan facts]
-  Facts --> Gemini[Gemini 3.5 Flash via Vertex AI]
+  Facts --> Gemini[Gemini 3.5 Flash]
 ```
 
-Each plan saves the scenario and evidence snapshot used to make it. Evidence
-fusion weighs report confidence, source reliability, and age. The graph models
-dependencies and road access. Seeded Monte Carlo runs explore possible
-cascades; the recovery scheduler separately chooses feasible actions under
-budget, crew, and access constraints. Its verification list is a heuristic,
-not a formal value-of-information calculation.
+1. **Evidence fusion** combines reports into a status and confidence per asset.
+2. **The graph** models typed dependencies and road access between assets.
+3. **Seeded Monte Carlo runs** explore how failures cascade. The same seed gives
+   the same result.
+4. **The CP-SAT scheduler** chooses repair actions that satisfy budget, crew,
+   and access constraints. It reports whether the solution is optimal, feasible,
+   or infeasible.
+5. **Gemini** explains the saved plan. It selects a bounded set of read-only
+   records, and the API rejects any citation that is not in the saved snapshot.
+   Gemini never sets failure probabilities or chooses the schedule.
 
-Gemini explains saved plan facts. It selects a bounded set of read-only records;
-the API checks those IDs and the citations in its answer. Gemini does not set
-failure probabilities or choose the repair schedule. Vertex AI is preferred
-when configured; a server-side Gemini API key also works locally.
+The verification list is a heuristic (criticality × uncertainty), not a formal
+value-of-information calculation. Monte Carlo uses the Python standard library on
+purpose. NumPy and GeoPandas were not needed for a graph this size, and leaving
+them out keeps the API image small.
 
 ## Stack
 
@@ -63,20 +86,35 @@ when configured; a server-side Gemini API key also works locally.
 | Console | Next.js, TypeScript, Google Maps JavaScript API |
 | API | Python 3.12, FastAPI, SQLAlchemy (async), Pydantic |
 | Data | SQLite for the demo, PostgreSQL/PostGIS for containers |
-| Engine | NetworkX dependency graph, stdlib seeded Monte Carlo, OR-Tools CP-SAT |
-| AI | Gemini 3.5 Flash through Vertex AI or the Gemini API, with cited facts |
+| Engine | NetworkX graph, seeded Monte Carlo, OR-Tools CP-SAT |
+| AI | Gemini 3.5 Flash through Vertex AI or the Gemini API |
+| Hosting | Google Cloud Run (API and console) |
 
-Monte Carlo uses the Python standard library on purpose. NumPy and GeoPandas
-were not needed for a graph this size, and leaving them out keeps the API image
-small.
+## API
+
+Interactive docs are served at `/docs` on the API.
+
+| Method | Path | Purpose |
+|---|---|---|
+| GET | `/api/v1/assets` | Assets as GeoJSON |
+| GET | `/api/v1/assets/{id}` | One asset with recent observations and dependencies |
+| GET | `/api/v1/observations` | Evidence reports |
+| POST | `/api/v1/observations` | Add a report (operator token) |
+| GET | `/api/v1/infrastructure/graph` | Fused assessments and access for a scenario |
+| POST | `/api/v1/simulation/cascade` | Seeded cascade simulation (operator token) |
+| POST | `/api/v1/recovery/plans` | Generate a new plan version (operator token) |
+| GET | `/api/v1/recovery/plans` | Saved plan versions, newest first |
+| POST | `/api/v1/briefings` | Cited Gemini explanation of a saved plan (operator token) |
+
+Writes require a bearer operator token. The console adds it on the server, so it
+never reaches the browser. Saved plans and simulation runs are never silently
+recomputed. Full details are in the [API contract](docs/api.md).
 
 ## Live deployment
 
 The demo runs on Google Cloud Run in `asia-south1`: one service for the console
-and one for the API. The console calls the API through a server-side proxy that
-adds the operator token, so the token never reaches the browser. The hosted demo
-uses a disposable SQLite database that resets to the seeded scenario when the
-API restarts. See the [deployment notes](docs/deployment.md).
+and one for the API. The hosted API uses a disposable SQLite database that resets
+to the seeded scenario when it restarts. See the [deployment notes](docs/deployment.md).
 
 ## Configuration
 
@@ -92,30 +130,7 @@ API restarts. See the [deployment notes](docs/deployment.md).
 Without a Gemini setting, `POST /api/v1/briefings` returns 503 and the rest of
 the app works normally.
 
-## Limits
-
-- All data is synthetic, and the scenario is one fixed district.
-- The shared operator token is prototype access control, not user
-  authentication. Anyone who can open the console can write.
-- Explanations describe saved plan facts. They are not a forecast or a
-  benchmark of answer accuracy.
-
-## File structure
-
-```text
-apps/api/              FastAPI routes, models, schemas, services, fixtures, tests
-apps/web/              Next.js console, Google map, API proxy, browser tests
-docs/                  Architecture, API, design, demo, verification evidence
-scripts/               Local launcher and quality checks
-docker-compose.yml     Local PostgreSQL/PostGIS and API containers
-.env.example           Environment variable names, no secrets
-```
-
-The [structure guide](docs/structure.md) names the main modules. See the
-[API contract](docs/api.md) and [architecture decisions](docs/architecture.md)
-for details.
-
-## Run and check locally
+## Run locally
 
 Install Python 3.12, [uv](https://docs.astral.sh/uv/), and Node.js. On Windows:
 
@@ -126,19 +141,39 @@ npm.cmd ci --prefix apps/web
 ./scripts/dev.ps1
 ```
 
-Open `http://127.0.0.1:3000`. The launcher uses a disposable SQLite demo and
-starts the API and console together. Set `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` in
-ignored `apps/web/.env.development.local` for the basemap. For Gemini briefings,
-configure the API server with `GOOGLE_CLOUD_PROJECT` and
-`GOOGLE_CLOUD_LOCATION` plus existing Application Default Credentials, or a
-server-side `GEMINI_API_KEY`. See [local development](docs/local-development.md).
+Open `http://127.0.0.1:3000`. The launcher starts the API and console together
+with a disposable SQLite demo. Put `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` in
+`apps/web/.env.local` for the basemap. For Gemini, set `GEMINI_API_KEY` in the
+root `.env`. See [local development](docs/local-development.md).
 
 ```powershell
-.venv/Scripts/python.exe scripts/verify.py
+.venv/Scripts/python.exe scripts/verify.py     # tests, lint, format, schema, size
 npm.cmd --prefix apps/web run typecheck
 npm.cmd --prefix apps/web run build
+npm.cmd --prefix apps/web run test:browser     # needs both servers running
 ```
 
-With both servers running, `npm.cmd --prefix apps/web run test:browser` checks
-the console. [Verification notes](docs/phase-4-status.md) record the latest
-results and open checks. [AGENTS.md](AGENTS.md) contains repository rules.
+## Repository layout
+
+```text
+apps/api/              FastAPI routes, models, schemas, services, fixtures, tests
+apps/web/              Next.js console, Google map, API proxy, browser tests
+docs/                  Architecture, API, design, demo, verification evidence
+scripts/               Local launcher and quality checks
+docker-compose.yml     Local PostgreSQL/PostGIS and API containers
+.env.example           Environment variable names, no secrets
+```
+
+## Limits
+
+- All data is synthetic, and the scenario is one fixed district.
+- The shared operator token is prototype access control, not user
+  authentication. Anyone who can open the console can write.
+- Gemini explanations describe saved plan facts. They are not a forecast.
+- Road-overlay interaction, full keyboard navigation, and measured contrast
+  checks are still incomplete. See the [verification notes](docs/phase-4-status.md).
+
+## Team
+
+Vyntra: Yashraj Pahuja, Piyush Sharma, Sukhvinder Kaur, Suman Mishra.
+Repository rules for contributors are in [AGENTS.md](AGENTS.md).

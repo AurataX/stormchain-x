@@ -28,7 +28,7 @@ Non-road access reports return 422. Physical damage and passability are separate
 Raw inventory assets expose `assessment_status: NOT_COMPUTED`. Use the graph
 endpoint for scenario/time-specific fused assessments. Scenario creation is
 not implemented; recovery endpoints are listed below.
-Phase 3:
+Recovery and briefings:
 
 | Method | Path | Behavior |
 |---|---|---|
@@ -41,7 +41,7 @@ Phase 3:
 OPTIMAL/FEASIBLE/INFEASIBLE, objective, best_bound, gap), `unselected`,
 `verification_priority` and `assumptions`. `deterministic_rationale` holds the
 diff against the previous version, its fingerprint and the saved input snapshot.
-See [Phase 3 review](phase-3-review.md) for semantics.
+See the [recovery review](phase-3-review.md) for semantics.
 
 Briefings are generated on demand; they never change a plan or observation. The
 backend caps model-selected fact IDs at 12, validates them against the saved
@@ -51,7 +51,7 @@ returns 503; malformed model output or unknown IDs return 502.
 
 Read access is local demo access, not production tenant authorization.
 
-Phase 2:
+Graph and simulation:
 
 | Method | Path | Behavior |
 |---|---|---|

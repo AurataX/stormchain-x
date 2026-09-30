@@ -1,4 +1,4 @@
-# Demonstration contract (Phase 5)
+# Demonstration guide
 
 0:00–1:00: identify the synthetic coastal district and the decision problem.
 Select an asset without reports; explain that unknown does not mean destroyed.
@@ -16,5 +16,5 @@ Do not force a scripted action if the optimizer chooses another feasible result.
 4:30–5:00: show the grounded explanation and measured metrics. Identify model
 assumptions and synthetic provenance. Keep a local, rehearsed fallback available.
 
-Demonstration reset must be explicit and isolated from saved evidence. Phase 1
-bootstrap preserves existing observations and is not a reset command.
+Demonstration reset must be explicit and isolated from saved evidence.
+Bootstrap preserves existing observations and is not a reset command.
