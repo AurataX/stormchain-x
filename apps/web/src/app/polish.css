@@ -1,0 +1,20 @@
+/* Scrollbars stay hidden until the pointer is over the scrolling area. */
+html, .plan, .evidence, .assets, .assets .card {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+html:hover, .plan:hover, .evidence:hover, .assets:hover, .assets .card:hover {
+  scrollbar-color: #b9c3d1 transparent;
+}
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+table, dd { font-variant-numeric: tabular-nums; }
+.card { box-shadow: 0 1px 2px rgb(23 32 45 / 4%), 0 6px 20px rgb(23 32 45 / 4%); }
+table.assets tbody tr { transition: background var(--fast); }
+table.assets tbody tr:hover { background: var(--canvas); }
+button, a { transition: background var(--fast), filter var(--fast), box-shadow var(--fast); }
+button.primary:hover:not(:disabled) { filter: brightness(1.1); box-shadow: 0 2px 8px rgb(23 92 211 / 30%); }
+:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}

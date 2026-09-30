@@ -8,6 +8,7 @@ import "./cards.css";
 import "./compact.css";
 import "./map.css";
 import "./briefing.css";
+import "./polish.css";
 
 export const metadata: Metadata = {
   title: "STORMCHAIN-X console",
