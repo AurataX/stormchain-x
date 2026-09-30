@@ -125,6 +125,7 @@ to the seeded scenario when it restarts. See the [deployment notes](docs/deploym
 | `GEMINI_API_KEY` | API | Optional. Enables Gemini plan explanations |
 | `GOOGLE_CLOUD_PROJECT`, `GOOGLE_CLOUD_LOCATION` | API | Optional. Use Vertex AI with existing credentials |
 | `API_URL` | Console server | Where the proxy sends API requests |
+| `NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID` | Console build | Vector Map ID for the tilted 3D view. Without it the map stays flat |
 | `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` | Console build | Browser map key. Public by design; restrict it by HTTP referrer and API |
 
 Without a Gemini setting, `POST /api/v1/briefings` returns 503 and the rest of
