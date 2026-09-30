@@ -18,7 +18,7 @@ details { margin-top: var(--s3); }
 .dot-partial { background: var(--partial); }
 .dot-failed { background: var(--failed); }
 .dot-unknown { border: 2px solid var(--unknown); }
-.dot-plan { border: 2px solid var(--brand); }
+.dot-plan { background: var(--brand); width: 8px; height: 8px; }
 .basemap-note {
   position: absolute; top: 52px; left: var(--s3); right: var(--s3); margin: 0; padding: var(--s1) var(--s3);
   background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-size: 12px;

@@ -13,8 +13,8 @@ export function Legend() {
           <span className={`dot dot-${tone}`} aria-hidden /> {label}
         </li>
       ))}
-      <li><span className="dot dot-plan" aria-hidden /> Planned repair</li>
-      <li className="muted">Shaded circle: impact zone by status · Glowing line: road · Dashed: dependency · Ring: planned / selected · Synthetic locations</li>
+      <li><span className="dot dot-plan" aria-hidden /> Blue dot: planned repair</li>
+      <li className="muted">Shaded circle: impact zone by status · Glowing line: road · Dashed: dependency · Synthetic locations</li>
     </ul>
   );
 }

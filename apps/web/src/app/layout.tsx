@@ -7,6 +7,7 @@ import "./dashboard.css";
 import "./cards.css";
 import "./compact.css";
 import "./map.css";
+import "./map-overlay.css";
 import "./briefing.css";
 import "./polish.css";
 

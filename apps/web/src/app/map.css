@@ -1,33 +1,19 @@
 .map-marker {
   display: grid; place-items: center; width: 22px; height: 22px;
   border: 2px solid var(--surface); border-radius: 50%; color: var(--text);
-  font: 600 12px var(--font); cursor: pointer;
+  font: 600 12px var(--font); cursor: pointer; position: relative;
+  box-shadow: 0 1px 4px rgb(0 0 0 / 35%);
 }
 .map-marker.dot-unknown { background: var(--surface); border-color: var(--unknown); }
-.map-marker.is-planned { outline: 3px solid var(--brand); outline-offset: 3px; }
-.map-marker.is-selected { box-shadow: 0 0 0 3px var(--surface), 0 0 0 6px var(--text); }
+/* Planned repair: a small blue badge instead of a ring; selected: a soft white halo. */
+.map-marker.is-planned::after {
+  content: ""; position: absolute; top: -4px; right: -4px; width: 9px; height: 9px;
+  border-radius: 50%; background: var(--brand); border: 1.5px solid var(--surface);
+}
+.map-marker.is-selected { transform: scale(1.25); box-shadow: 0 0 0 4px rgb(255 255 255 / 55%); }
 .map-marker:focus-visible { outline: 3px solid var(--brand); outline-offset: 4px; }
 @media (min-width: 1100px) {
   .evidence .form { grid-template-columns: 1fr 1fr; }
   .form input, .form select { min-width: 0; width: 100%; }
   .form h2, .form button, .form [role="status"], .form label:has([name="notes"]) { grid-column: 1 / -1; }
-}
-
-.map-stage { position: relative; }
-.map-key {
-  position: absolute; top: var(--s3); left: var(--s3); z-index: 2; display: grid; gap: var(--s1);
-  padding: var(--s2) var(--s3); font-size: 12px; background: rgb(255 255 255 / 92%);
-  border: 1px solid var(--border); border-radius: 10px; box-shadow: 0 2px 10px rgb(23 32 45 / 10%);
-  backdrop-filter: blur(6px);
-}
-.map-key span { display: flex; align-items: center; gap: var(--s2); }
-.zone { width: 14px; height: 14px; border-radius: 50%; border: 2px solid; }
-.zone-failed { background: rgb(180 35 24 / 30%); border-color: var(--failed); }
-.zone-partial { background: rgb(135 83 0 / 25%); border-color: var(--partial); }
-.zone-unknown { background: rgb(105 65 165 / 20%); border-color: var(--unknown); }
-.zone-operational { background: rgb(8 116 90 / 22%); border-color: var(--operational); }
-.map-3d {
-  margin: var(--s3); padding: var(--s2) var(--s3); font-size: 12px; font-weight: 600;
-  background: rgb(255 255 255 / 95%); border: 1px solid var(--border); border-radius: 10px;
-  box-shadow: 0 2px 10px rgb(23 32 45 / 12%);
 }
