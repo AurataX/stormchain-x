@@ -20,5 +20,6 @@ Browser acceptance at 360/768/1280px: no clipped primary action, no accidental
 horizontal page scrolling, usable empty/error states, stable layout during loading.
 Test keyboard-only evidence entry and map-to-plan selection.
 
-Map attribution remains visible. If external tiles fail, show local synthetic
-geometry and an explicit basemap-unavailable state. Never display “live” for fixtures.
+Map attribution must remain visible; the legend sits outside the map. Google Maps
+requires network access and an authorized key. On failure, show an explicit error
+and preserve the asset table, inspector and evidence controls. Never display “live” for fixtures.

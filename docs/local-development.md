@@ -1,6 +1,6 @@
 # Local development (PowerShell)
 
-From `E:\Hackathon_Project`:
+From the repository root:
 
 ```powershell
 uv venv .venv
@@ -8,7 +8,31 @@ uv pip sync --python .venv/Scripts/python.exe apps/api/requirements-dev.lock
 .venv/Scripts/python.exe scripts/verify.py
 ```
 
-Run SQLite development:
+Run the API and Phase 4 console together (stop an existing console first):
+
+```powershell
+./scripts/dev.ps1
+```
+
+Open `http://127.0.0.1:3000`. The launcher starts the API on port 8001 and
+supplies the same operator token to both servers. Starting only `npm run dev`
+does not start the Python API. A proxy 502 means the configured backend cannot
+be reached; check `http://127.0.0.1:8001/ready` when using the launcher.
+The console has no `/contact` route; use `/`.
+
+Google Maps reads `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` from
+`apps/web/.env.development.local` (ignored). This browser key must allow the
+Maps JavaScript API and the local website origin. Optional
+`NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID` overrides the sample `DEMO_MAP_ID`.
+Restart the console after changing public environment variables.
+`ApiTargetBlockedMapError` means the key's API restrictions block this API.
+No API enablement or cloud configuration is performed by the local launcher.
+
+With both servers running and Chrome installed, run `npm run test:browser` from
+`apps/web`. These tests mock Google Maps explicitly and use the real local API;
+the workflow test writes labeled synthetic reports and new demo plan versions.
+
+For a backend-only SQLite session:
 
 ```powershell
 $env:OPERATOR_TOKEN = [guid]::NewGuid().ToString('N')
@@ -38,4 +62,5 @@ Follow [cleanup policy](docker-cleanup.md). The init service exits
 successfully after initialization; the API waits for it.
 
 All fixture observations have a fixed 2026-09-28 simulation clock; they are
-historical synthetic reports, not real-time feeds. No frontend exists yet.
+historical synthetic reports, not real-time feeds. See [Phase 4 status](phase-4-status.md)
+for the console's implemented behavior and remaining browser checks.

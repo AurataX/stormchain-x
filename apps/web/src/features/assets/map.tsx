@@ -1,67 +1,46 @@
 "use client";
-import * as maplibregl from "maplibre-gl";
-import "maplibre-gl/dist/maplibre-gl.css";
 import { useEffect, useRef, useState } from "react";
 import type { Graph } from "@/lib/types";
-import { bounds, mapData } from "./map-data";
-import { select } from "./map-highlight";
-import { addLayers } from "./map-layers";
-import { baseStyle, watchBasemap } from "./map-style";
+import { loadGoogleMaps } from "./google-loader";
+import { bounds } from "./map-data";
+import { addMarkers } from "./map-markers";
+import { addLines } from "./map-lines";
 
-maplibregl.setWorkerUrl("/maplibre/maplibre-gl-worker.mjs");
-
-type Props = {
-  graph: Graph;
-  planned: Set<string>;
-  selected: string | null;
-  onSelect: (id: string) => void;
-};
+type Props = { graph: Graph; planned: Set<string>; selected: string | null; onSelect: (id: string) => void };
 
 export function AssetMap({ graph, planned, selected, onSelect }: Props) {
   const box = useRef<HTMLDivElement>(null);
-  const map = useRef<maplibregl.Map | null>(null);
-  const pick = useRef(onSelect);
-  pick.current = onSelect;
-  const [ready, setReady] = useState(false);
+  const [map, setMap] = useState<google.maps.Map>();
+  const [error, setError] = useState("");
   const fitted = useRef(false);
-  const [offline, setOffline] = useState(false);
-
   useEffect(() => {
-    const m = new maplibregl.Map({
-      container: box.current!, center: [83.315, 17.76], zoom: 11.6,
-      attributionControl: { compact: true }, style: baseStyle(),
-    });
-    map.current = m;
-    watchBasemap(m, () => setOffline(true));
-    m.on("load", () => {
-      addLayers(m);
-      m.on("click", (event) => {
-        const hit = m.queryRenderedFeatures(event.point, { layers: ["sites", "roads"] })[0];
-        if (hit) pick.current(String(hit.properties.id));
-      });
-      setReady(true);
-    });
-    return () => m.remove();
+    let active = true;
+    const fail = () => setError("Google Maps authorization failed. Use the asset list below.");
+    window.addEventListener("stormchain-map-error", fail);
+    loadGoogleMaps().then(() => {
+      if (active) setMap(new google.maps.Map(box.current!, {
+        mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID || "DEMO_MAP_ID",
+        center: { lat: 17.76, lng: 83.315 }, zoom: 11,
+        colorScheme: google.maps.ColorScheme.FOLLOW_SYSTEM,
+        mapTypeControl: false, streetViewControl: false, fullscreenControl: false,
+        gestureHandling: "cooperative",
+      }));
+    }).catch((e: Error) => { if (active) setError(e.message); });
+    return () => { active = false; window.removeEventListener("stormchain-map-error", fail); };
   }, []);
-
   useEffect(() => {
-    const m = map.current;
-    if (!m || !ready) return;
-    const data = mapData(graph, planned);
-    (m.getSource("assets") as maplibregl.GeoJSONSource).setData(data.assets);
-    (m.getSource("links") as maplibregl.GeoJSONSource).setData(data.links);
-    select(m, selected);
-    if (!fitted.current) {
-      m.fitBounds(bounds(graph), { padding: 60, duration: 0 });
+    if (!map) return;
+    const clearMarkers = addMarkers(map, graph, planned, selected, onSelect);
+    const clearLines = addLines(map, graph, planned, selected, onSelect);
+    if (!fitted.current && graph.assets.length) {
+      const [sw, ne] = bounds(graph);
+      map.fitBounds({ west: sw[0], south: sw[1], east: ne[0], north: ne[1] }, 40);
       fitted.current = true;
     }
-  }, [graph, planned, selected, ready]);
-
-  return (
-    <>
-      <div ref={box} className="map" role="application"
-        aria-label="Asset map of synthetic geometry. Use the asset list for keyboard access." />
-      {offline && <p className="basemap-note" role="status">Basemap unavailable; showing synthetic geometry only.</p>}
-    </>
-  );
+    return () => { clearMarkers(); clearLines(); };
+  }, [map, graph, planned, selected, onSelect]);
+  return <>
+    <div ref={box} className="map" aria-label="Infrastructure map; keyboard alternative below." />
+    {(!map || error) && <p className="basemap-note" role={error ? "alert" : "status"}>{error || "Loading Google Maps…"}</p>}
+  </>;
 }

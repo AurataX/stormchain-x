@@ -1,0 +1,14 @@
+.map-marker {
+  display: grid; place-items: center; width: 22px; height: 22px;
+  border: 2px solid var(--surface); border-radius: 50%; color: var(--text);
+  font: 600 12px var(--font); cursor: pointer;
+}
+.map-marker.dot-unknown { background: var(--surface); border-color: var(--unknown); }
+.map-marker.is-planned { outline: 3px solid var(--brand); outline-offset: 3px; }
+.map-marker.is-selected { box-shadow: 0 0 0 3px var(--surface), 0 0 0 6px var(--text); }
+.map-marker:focus-visible { outline: 3px solid var(--brand); outline-offset: 4px; }
+@media (min-width: 1100px) {
+  .evidence .form { grid-template-columns: 1fr 1fr; }
+  .form input, .form select { min-width: 0; width: 100%; }
+  .form h2, .form button, .form [role="status"], .form label:has([name="notes"]) { grid-column: 1 / -1; }
+}

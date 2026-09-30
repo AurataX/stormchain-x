@@ -7,8 +7,9 @@ export function Constraints({ scenario }: { scenario: Scenario | null }) {
     <section aria-label="Scenario constraints" className="card constraints">
       <div>
         <h2>{scenario.name}</h2>
-        <p>{scenario.description}</p>
-        <p className="muted">Constraints are read-only: the API has no scenario editing.</p>
+        <details><summary className="muted">Scenario assumptions · fixed constraints</summary>
+          <p>{scenario.description}</p>
+        </details>
       </div>
       <dl>
         <div><dt>Budget</dt><dd>{money(scenario.budget_cents)}</dd></div>

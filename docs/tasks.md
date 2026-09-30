@@ -36,10 +36,16 @@ Evidence: [Phase 3 review](phase-3-review.md). PostgreSQL path for plans is unve
 
 - [x] Map, inspector, constraints, evidence form, comparison (no timeline: no timeline API).
 - [x] Apply design tokens, icons, motion, keyboard and responsive behavior (code only).
-- [ ] Browser-test every workflow against the API; no dummy controls.
+- [x] Replace MapLibre with Google Maps and tighten console density; retain synthetic labels.
+- [ ] Finish browser acceptance against the real Google map; key restrictions currently block it.
 
 Evidence: [Phase 4 status](phase-4-status.md). Implemented and API-verified through
 the proxy; visual, keyboard and 360/768/1280px checks are NOT yet done.
+Local proxy recovery on 2026-09-30 restored all four console GETs to 200 after
+starting the missing API; verification passed with 55 tests and 4 PostgreSQL skips.
+Ten browser tests now pass with real API and a labeled map mock, including light/dark
+360/768/1280px layouts and evidence/recalculation. Real Google map and full keyboard
+acceptance remain incomplete; see the latest handoff section.
 
 ## Phase 5 — evaluation, release, and demonstration
 

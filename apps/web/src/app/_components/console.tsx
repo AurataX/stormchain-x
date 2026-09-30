@@ -30,6 +30,7 @@ export function Console() {
           <Kpis plan={c.latest} scenario={c.scenario.data} graph={graph} stale={c.stale} />
         </div>
         <div className="panel mapbox" data-panel="map">
+          <h2>Infrastructure impact <span className="muted">Select an asset to inspect evidence</span></h2>
           {graph ? (
             <>
               <AssetMap graph={graph} planned={c.planned} selected={c.selected} onSelect={c.setSelected} />

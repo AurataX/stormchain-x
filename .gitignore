@@ -5,6 +5,7 @@ __pycache__/
 *.pyc
 *.db
 .env
+.env*.local
 node_modules/
 .next/
 *.egg-info/
@@ -13,3 +14,5 @@ build/
 apps/web/public/maplibre/
 env
 *.tsbuildinfo
+apps/web/test-results/
+apps/web/playwright-report/
