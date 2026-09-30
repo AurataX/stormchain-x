@@ -4,6 +4,7 @@ import type { Graph } from "@/lib/types";
 import { loadGoogleMaps } from "./google-loader";
 import { bounds } from "./map-data";
 import { addLayers } from "./map-layers";
+import { addViewToggle, mapOptions } from "./map-view";
 
 type Props = { graph: Graph; planned: Set<string>; selected: string | null; onSelect: (id: string) => void };
 
@@ -17,13 +18,10 @@ export function AssetMap({ graph, planned, selected, onSelect }: Props) {
     const fail = () => setError("Google Maps authorization failed. Use the asset list below.");
     window.addEventListener("stormchain-map-error", fail);
     loadGoogleMaps().then(() => {
-      if (active) setMap(new google.maps.Map(box.current!, {
-        mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID || "DEMO_MAP_ID",
-        center: { lat: 17.76, lng: 83.315 }, zoom: 11,
-        colorScheme: google.maps.ColorScheme.LIGHT,
-        mapTypeControl: false, streetViewControl: false, fullscreenControl: false,
-        gestureHandling: "cooperative",
-      }));
+      if (!active) return;
+      const created = new google.maps.Map(box.current!, mapOptions());
+      addViewToggle(created);
+      setMap(created);
     }).catch((e: Error) => { if (active) setError(e.message); });
     return () => { active = false; window.removeEventListener("stormchain-map-error", fail); };
   }, []);
