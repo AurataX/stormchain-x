@@ -3,14 +3,16 @@ import type { Plan } from "@/lib/plan-types";
 import type { Scenario } from "@/lib/types";
 import { ActionsTable } from "./actions-table";
 import { Compare } from "./compare";
+import { Briefing } from "./briefing";
 import { VerifyList } from "./verify-list";
 
 type Props = {
   plans: Plan[]; scenario: Scenario | null; stale: boolean; busy: boolean;
   error: string | null; onGenerate: () => void; onSelect: (id: string) => void;
+  selected: string | null;
 };
 
-export function PlanPanel({ plans, scenario, stale, busy, error, onGenerate, onSelect }: Props) {
+export function PlanPanel({ plans, scenario, stale, busy, error, onGenerate, onSelect, selected }: Props) {
   const plan = plans[0];
   const solver = plan?.plan_payload.solver;
   return (
@@ -39,6 +41,7 @@ export function PlanPanel({ plans, scenario, stale, busy, error, onGenerate, onS
             <summary>Compare with previous version</summary>
             <Compare current={plan} previous={plans[1]} />
           </details>
+          <Briefing key={plan.id} plan={plan} assetId={selected} />
           <details>
             <summary>Assumptions</summary>
             <ul>{plan.plan_payload.assumptions.map((t) => <li key={t}>{t}</li>)}</ul>

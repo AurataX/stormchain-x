@@ -14,7 +14,7 @@ TOKEN = "local-test-token-with-at-least-24-characters"
 
 @pytest.fixture
 def settings(tmp_path):
-    return Settings(f"sqlite+aiosqlite:///{tmp_path / 'test.db'}", TOKEN)
+    return Settings(f"sqlite+aiosqlite:///{tmp_path / 'test.db'}", TOKEN, "", "", "")
 
 
 @pytest.fixture

@@ -38,6 +38,8 @@ Evidence: [Phase 3 review](phase-3-review.md). PostgreSQL path for plans is unve
 - [x] Apply design tokens, icons, motion, keyboard and responsive behavior (code only).
 - [x] Replace MapLibre with Google Maps and tighten console density; retain synthetic labels.
 - [ ] Finish browser acceptance against the real Google map; key restrictions currently block it.
+- [x] Optional grounded plan explanation: `POST /api/v1/briefings` (Vertex AI, citation-checked
+  against saved plan/evidence facts, 503 when unconfigured). No console UI wired yet.
 
 Evidence: [Phase 4 status](phase-4-status.md). Implemented and API-verified through
 the proxy; visual, keyboard and 360/768/1280px checks are NOT yet done.

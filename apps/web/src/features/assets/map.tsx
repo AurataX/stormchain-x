@@ -21,7 +21,7 @@ export function AssetMap({ graph, planned, selected, onSelect }: Props) {
       if (active) setMap(new google.maps.Map(box.current!, {
         mapId: process.env.NEXT_PUBLIC_GOOGLE_MAPS_MAP_ID || "DEMO_MAP_ID",
         center: { lat: 17.76, lng: 83.315 }, zoom: 11,
-        colorScheme: google.maps.ColorScheme.FOLLOW_SYSTEM,
+        colorScheme: google.maps.ColorScheme.LIGHT,
         mapTypeControl: false, streetViewControl: false, fullscreenControl: false,
         gestureHandling: "cooperative",
       }));

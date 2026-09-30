@@ -6,3 +6,4 @@ asyncpg==0.31.0
 pydantic==2.13.5
 networkx==3.7
 ortools==9.15.6755
+google-genai==2.25.0

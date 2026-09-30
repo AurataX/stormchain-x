@@ -53,7 +53,8 @@ export function Console() {
         </div>
         <div className="panel plan" data-panel="plan">
           <PlanPanel plans={c.plans.data ?? []} scenario={c.scenario.data} stale={c.stale}
-            busy={c.busy} error={c.error ?? c.plans.error} onGenerate={c.generate} onSelect={c.setSelected} />
+            busy={c.busy} error={c.error ?? c.plans.error} onGenerate={c.generate}
+            onSelect={c.setSelected} selected={c.selected} />
         </div>
       </main>
     </div>

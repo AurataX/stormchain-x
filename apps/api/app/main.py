@@ -4,6 +4,7 @@ from fastapi import FastAPI
 
 from app.api.v1.endpoints import (
     assets,
+    briefing,
     graph,
     health,
     observations,
@@ -36,6 +37,7 @@ def create_app(settings: Settings | None = None):
     for router in (
         health.router,
         assets.router,
+        briefing.router,
         observations.router,
         scenarios.router,
         graph.router,

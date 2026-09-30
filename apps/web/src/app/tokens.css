@@ -6,10 +6,4 @@
   --font: "Geist", ui-sans-serif, system-ui, "Segoe UI", sans-serif;
   --fast: 150ms; --slow: 250ms;
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --canvas: #0c0e14; --surface: #161922; --border: #303544;
-    --text: #f4f6fa; --text-2: #abb5c6; --brand: #69b7ff;
-    --operational: #52d6b0; --partial: #f4be63; --failed: #ff8585; --unknown: #bcadf4;
-  }
-}
+/* Dark palette forced off for now; re-enable via a theme toggle, not OS preference. */
