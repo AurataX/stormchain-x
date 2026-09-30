@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { AssetMap } from "@/features/assets/map";
-import { Legend } from "@/features/assets/legend";
+import { Legend, MapKey } from "@/features/assets/legend";
 import { AssetTable } from "@/features/assets/asset-table";
 import { PlanPanel } from "@/features/recovery/plan-panel";
 import { Constraints } from "./constraints";
@@ -33,7 +33,10 @@ export function Console() {
           <h2>Infrastructure impact <span className="muted">Select an asset to inspect evidence</span></h2>
           {graph ? (
             <>
-              <AssetMap graph={graph} planned={c.planned} selected={c.selected} onSelect={c.setSelected} />
+              <div className="map-stage">
+                <AssetMap graph={graph} planned={c.planned} selected={c.selected} onSelect={c.setSelected} />
+                <MapKey />
+              </div>
               <Legend />
             </>
           ) : (

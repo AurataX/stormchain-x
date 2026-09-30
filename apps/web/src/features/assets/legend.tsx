@@ -18,3 +18,21 @@ export function Legend() {
     </ul>
   );
 }
+
+const ZONES = [
+  ["failed", "High impact"],
+  ["partial", "Partial"],
+  ["unknown", "Unverified"],
+  ["operational", "Clear"],
+] as const;
+
+export function MapKey() {
+  return (
+    <div className="map-key" aria-hidden>
+      <strong>Impact zones</strong>
+      {ZONES.map(([tone, label]) => (
+        <span key={tone}><i className={`zone zone-${tone}`} /> {label}</span>
+      ))}
+    </div>
+  );
+}
