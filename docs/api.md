@@ -26,8 +26,8 @@ Road reports additionally accept optional access_status: OPEN, BLOCKED, or UNKNO
 Non-road access reports return 422. Physical damage and passability are separate.
 
 Raw inventory assets expose `assessment_status: NOT_COMPUTED`. Use the graph
-endpoint for scenario/time-specific fused assessments. Scenario creation and
-recovery endpoints are not implemented.
+endpoint for scenario/time-specific fused assessments. Scenario creation is
+not implemented; recovery endpoints are listed below.
 Phase 3:
 
 | Method | Path | Behavior |
@@ -35,12 +35,19 @@ Phase 3:
 | POST | /api/v1/recovery/plans | Operator token; body scenario_id + optional past as_of; 201 new version |
 | GET | /api/v1/recovery/plans?scenario_id= | Versions newest first; `limit` 1–100 (default 20); 404 unknown scenario |
 | GET | /api/v1/recovery/plans/{uuid} | One saved plan; never recomputed |
+| POST | /api/v1/briefings | Operator token; saved plan ID, question, optional asset ID; Gemini read-only fact lookup and cited briefing |
 
 `plan_payload` holds `actions` (start/end hour, crew, cost), `solver` (status
 OPTIMAL/FEASIBLE/INFEASIBLE, objective, best_bound, gap), `unselected`,
 `verification_priority` and `assumptions`. `deterministic_rationale` holds the
 diff against the previous version, its fingerprint and the saved input snapshot.
 See [Phase 3 review](phase-3-review.md) for semantics.
+
+Briefings are generated on demand; they never change a plan or observation. The
+backend caps model-selected fact IDs at 12, validates them against the saved
+snapshot, and rejects unknown final citation IDs. Model prose is still an
+inference, not a verified causal or scientific result. Missing model configuration
+returns 503; malformed model output or unknown IDs return 502.
 
 Read access is local demo access, not production tenant authorization.
 

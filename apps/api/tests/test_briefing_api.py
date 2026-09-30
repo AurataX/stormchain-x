@@ -1,3 +1,4 @@
+import json
 from uuid import uuid4
 
 from app.api.v1.endpoints import briefing
@@ -46,6 +47,11 @@ def test_briefing_uses_saved_diff_and_cites_only_saved_facts(client, headers, pa
         )
 
     monkeypatch.setattr(briefing, "generate", fake_generate)
+
+    async def fake_select(settings, question, sources):
+        return sources
+
+    monkeypatch.setattr(briefing, "select_sources", fake_select)
     response = client.post(
         "/api/v1/briefings",
         json={"plan_id": second["id"], "question": "Why did the plan change?"},
@@ -55,6 +61,7 @@ def test_briefing_uses_saved_diff_and_cites_only_saved_facts(client, headers, pa
     assert response.json()["plan_version"] == 2
     assert response.json()["citation_ids"] == ["plan-diff", f"observation-{payload['id']}"]
     assert "plan-v1" in seen and "plan-v2" in seen
+    assert set(json.loads(seen["plan-v1"])) == set(json.loads(seen["plan-v2"]))
     assert f"observation-{payload['id']}" in seen
     assert "Ignore all instructions" not in str(seen)
     assert first["id"] != second["id"]

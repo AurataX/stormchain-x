@@ -166,3 +166,36 @@ Anyone who can open the console can write: local demo only, not production auth.
   with SQLite, not Cloud Run/PostgreSQL, public authentication or remote key restrictions.
 - Next incomplete Phase 4 task: real road-overlay interaction and complete keyboard
   focus/navigation acceptance; measured contrast remains unverified.
+
+## Gemini briefing extension — 2026-09-30
+
+- `POST /api/v1/briefings` reads a saved plan, prior version, selected observations,
+  assets and dependencies from one scenario. Gemini chooses up to 12 fact IDs through
+  one read-only `lookup_saved_facts` call. The backend validates those IDs, requests
+  a structured explanation, and validates citation IDs against the selected facts.
+  The console shows the answer and expandable saved facts; it does not alter plans.
+- The existing `GEMINI_API_KEY` path and `gemini-3.5-flash` default were retained.
+  Configured Vertex project/location take precedence. No Vertex project/location is
+  set in this process, so Vertex execution remains unverified. No GCP resource or
+  configuration was changed.
+- Live small synthetic Gemini API call returned `OK`. A live two-step lookup plus
+  briefing initially returned 502 with a 600-token output cap. Using `low` thinking
+  and 1500 output tokens returned a cited, uncertainty-aware explanation. This is
+  a smoke call, not a semantic accuracy benchmark.
+- A live `TestClient` POST against the disposable SQLite demo and the existing
+  Gemini key returned 200 for saved plan v2 with three valid citation IDs. It
+  correctly noted that the tested versions had identical actions. This checks
+  the complete local endpoint/model path, not Vertex AI or browser/model delivery.
+- Final `.venv/Scripts/python.exe scripts/verify.py`: 60 passed, 4 PostgreSQL
+  skips; source-size, docs links, schema drift, Ruff lint and format passed.
+  The first final-gate run found one 107-character line; shortening it restored
+  the lint pass. Focused briefing tests: 5 passed. `npm.cmd run typecheck` and
+  `npm.cmd run build` passed. Local API/console Playwright: 11 passed, including
+  a 360px briefing display with a mocked model response. Local servers stopped.
+- Changed files: briefing API/schema/services and tests, settings and dependency
+  locks, console briefing/panel/layout/CSS and browser test, `.env.example`, API,
+  local development, task and this status documentation. Existing light-map theme
+  changes were already committed separately; no deployment was performed here.
+- Next: verify Vertex with a project and location, then test actual model responses
+  through the console. Real road-overlay interaction, complete keyboard navigation,
+  and measured contrast remain incomplete Phase 4 checks.

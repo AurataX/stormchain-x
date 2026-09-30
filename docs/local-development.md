@@ -65,6 +65,13 @@ Open `http://127.0.0.1:8000/docs`. Authorize writes using the token in your
 local environment. Token values must not be committed or pasted into chat.
 Direct Python does not automatically load `.env`; set environment variables explicitly.
 
+For optional briefings, set server-side `GOOGLE_CLOUD_PROJECT` and
+`GOOGLE_CLOUD_LOCATION` with existing Application Default Credentials. Vertex AI
+takes precedence. `GEMINI_API_KEY` is the local Gemini API alternative. The
+default model is `gemini-3.5-flash`; `VERTEX_MODEL` overrides it for either path.
+Restart the API after changing its environment. An unset provider gives 503.
+The console proxy passes its operator token to the briefing endpoint.
+
 Docker alternative (Docker Desktop running):
 
 ```powershell

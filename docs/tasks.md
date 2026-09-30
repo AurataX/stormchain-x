@@ -37,12 +37,14 @@ Evidence: [Phase 3 review](phase-3-review.md). PostgreSQL path for plans is unve
 - [x] Map, inspector, constraints, evidence form, comparison (no timeline: no timeline API).
 - [x] Apply design tokens, icons, motion, keyboard and responsive behavior (code only).
 - [x] Replace MapLibre with Google Maps and tighten console density; retain synthetic labels.
-- [ ] Finish browser acceptance against the real Google map; key restrictions currently block it.
-- [x] Optional grounded plan explanation: `POST /api/v1/briefings` (Vertex AI, citation-checked
-  against saved plan/evidence facts, 503 when unconfigured). No console UI wired yet.
+- [ ] Finish real road overlay, keyboard navigation and contrast acceptance.
+- [x] Gemini briefing and read-only fact lookup over saved plan snapshots; citation IDs
+  validated, console control and mock browser test complete. Live Gemini API key path checked.
+- [ ] Verify the Vertex AI path with a configured project/location and the real console
+  workflow; the current environment has neither Vertex setting.
 
-Evidence: [Phase 4 status](phase-4-status.md). Implemented and API-verified through
-the proxy; visual, keyboard and 360/768/1280px checks are NOT yet done.
+Evidence: [Phase 4 status](phase-4-status.md). The local real Google map passed
+viewport and marker checks; real road interactions and full keyboard checks remain.
 Local proxy recovery on 2026-09-30 restored all four console GETs to 200 after
 starting the missing API; verification passed with 55 tests and 4 PostgreSQL skips.
 Ten browser tests now pass with real API and a labeled map mock, including light/dark

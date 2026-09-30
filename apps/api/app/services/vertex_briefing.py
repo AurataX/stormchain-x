@@ -37,8 +37,9 @@ async def generate(settings, question, sources):
                 ),
                 response_mime_type="application/json",
                 response_schema=Draft,
-                temperature=0,
-                max_output_tokens=600,
+                automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
+                thinking_config=types.ThinkingConfig(thinking_level="low"),
+                max_output_tokens=1500,
             ),
         )
     except Exception:

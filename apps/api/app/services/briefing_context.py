@@ -4,6 +4,7 @@ from fastapi import HTTPException
 from sqlalchemy import select
 
 from app.models import RecoveryPlan
+from app.services.briefing_plan_fact import summarize_plan
 
 
 async def gather(database, request):
@@ -24,31 +25,9 @@ async def gather(database, request):
     def add(key, value):
         sources[key] = json.dumps(value, sort_keys=True, default=str)
 
-    add(
-        f"plan-v{plan.version}",
-        {
-            "scenario_id": plan.scenario_id,
-            "version": plan.version,
-            "generated_at": plan.generated_at,
-            "as_of": snapshot["parameters"]["as_of"],
-            "cost_cents": plan.total_cost_cents,
-            "duration_minutes": plan.duration_minutes,
-            "actions": plan.plan_payload["actions"],
-            "solver": plan.plan_payload["solver"],
-            "verification_priority": plan.plan_payload["verification_priority"][:10],
-            "assumptions": plan.plan_payload["assumptions"],
-        },
-    )
+    add(f"plan-v{plan.version}", summarize_plan(plan))
     if previous:
-        add(
-            f"plan-v{previous.version}",
-            {
-                "version": previous.version,
-                "cost_cents": previous.total_cost_cents,
-                "duration_minutes": previous.duration_minutes,
-                "actions": previous.plan_payload["actions"],
-            },
-        )
+        add(f"plan-v{previous.version}", summarize_plan(previous))
         add("plan-diff", plan.deterministic_rationale["diff"])
     old_ids = (
         {row["id"] for row in previous.deterministic_rationale["inputs"]["observations"]}
