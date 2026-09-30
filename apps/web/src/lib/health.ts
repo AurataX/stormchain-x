@@ -25,4 +25,5 @@ export function ago(iso: string) {
   return minutes < 2880 ? `${Math.round(minutes / 60)} h ago` : `${Math.round(minutes / 1440)} d ago`;
 }
 
-export const money = (cents: number) => `$${(cents / 100).toLocaleString("en-US")}`;
+const rupees = new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 });
+export const money = (paise: number) => rupees.format(paise / 100);

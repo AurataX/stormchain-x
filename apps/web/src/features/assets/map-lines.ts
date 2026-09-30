@@ -18,8 +18,10 @@ export function addLines(map: google.maps.Map, graph: Graph, planned: Set<string
     const coordinates = (feature.geometry as { coordinates: number[][] }).coordinates;
     const path = coordinates.map(([lng, lat]) => ({ lat, lng }));
     const highlighted = properties.id === selected || properties.planned;
-    const layers = highlighted ? [new google.maps.Polyline({ map, path, strokeWeight: 10,
-      strokeColor: css(properties.id === selected ? "--text" : "--brand"), zIndex: 1 })] : [];
+    const glow = new google.maps.Polyline({ map, path, strokeWeight: 12, clickable: false, zIndex: 0,
+      strokeColor: css(`--${properties.health}`), strokeOpacity: 0.3 });
+    const layers = highlighted ? [glow, new google.maps.Polyline({ map, path, strokeWeight: 10,
+      strokeColor: css(properties.id === selected ? "--text" : "--brand"), zIndex: 1 })] : [glow];
     const road = new google.maps.Polyline({ map, path, strokeWeight: 4,
       strokeColor: css(`--${properties.health}`), zIndex: 2 });
     road.addListener("click", () => onSelect(String(properties.id)));

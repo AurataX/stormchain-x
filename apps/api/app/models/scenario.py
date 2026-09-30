@@ -12,7 +12,7 @@ class Scenario(Base):
     cyclone_category: Mapped[int]
     communication_mode: Mapped[str] = mapped_column(String(32))
     budget_cents: Mapped[int]
-    currency: Mapped[str] = mapped_column(String(3), default="USD")
+    currency: Mapped[str] = mapped_column(String(3), default="INR")
     available_crews: Mapped[dict] = mapped_column(JSON)
     __table_args__ = (
         CheckConstraint("budget_cents >= 0", name="budget"),

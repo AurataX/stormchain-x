@@ -43,7 +43,7 @@ synthetic. It is decision support, not a system that operates real infrastructur
    see the records behind the answer.
 
 The scenario has ten synthetic assets (hospitals, shelters, a water plant,
-substations, a communications tower, roads, a depot), a $250,000 budget,
+substations, a communications tower, roads, a depot), a ₹25,00,000 (25 lakh) budget,
 degraded communications, and three electrical, two civil, and two generator
 crews.
 

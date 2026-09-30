@@ -25,3 +25,23 @@ and review evidence determine whether a change is accepted.
 After verification, reclaim local Docker storage using
 [cleanup](docs/docker-cleanup.md). Remove project containers, images, volumes,
 and build cache; leave unrelated projects and all GCP resources untouched.
+
+## Hackathon-day changes
+
+Live demo: https://stormchain-web-70530354318.asia-south1.run.app (Cloud Run,
+`asia-south1`, project `astute-lyceum-484806-g3`). Show the user each command you
+run and its output. Do not hide long steps.
+
+1. Change code in `apps/api` or `apps/web`. Amounts are stored as integer paise and
+   shown in rupees (`money()` in `apps/web/src/lib/health.ts`).
+2. Verify: `.venv/Scripts/python.exe scripts/verify.py`, then
+   `npm.cmd --prefix apps/web run typecheck` and `npm.cmd --prefix apps/web run build`.
+   Unset `GEMINI_API_KEY` first so tests do not use the real key.
+3. Commit as the configured human author and push to `main`. No Claude trailer or
+   Co-Authored-By line. Teammates run `git pull` afterwards.
+4. Deploy: `./scripts/deploy.ps1 -Target api|web|all`. It needs `gcloud` logged in and
+   `apps/web/.env.local` holding the Maps key. Then open the live URL and check it.
+
+Rules: the demo database is SQLite under `/tmp` and resets when the API restarts. Never
+build or run containers on the growthcharters VPS. Never print or commit keys, tokens,
+or `.env` files. Do not change org policy or IAM without the user saying so in this session.

@@ -17,7 +17,7 @@ export function Console() {
   const graph = c.graph.data;
   return (
     <div className="console" data-tab={tab}>
-      <Header asOf={c.asOf} onAsOf={c.setAsOf} stale={c.stale}
+      <Header asOf={c.asOf} onAsOf={c.setAsOf} stale={c.stale && !!c.latest}
         planLabel={c.latest ? `Plan v${c.latest.version}` : "No plan yet"} />
       <Tabs tab={tab} onTab={setTab} />
       {c.graph.error && (

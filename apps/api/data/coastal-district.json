@@ -400,8 +400,8 @@
       "description": "Category 4 scenario with incomplete and conflicting evidence. All observations are simulated.",
       "cyclone_category": 4,
       "communication_mode": "DEGRADED",
-      "budget_cents": 25000000,
-      "currency": "USD",
+      "budget_cents": 250000000,
+      "currency": "INR",
       "available_crews": {
         "electrical": 3,
         "civil": 2,

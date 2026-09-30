@@ -15,7 +15,7 @@ def test_api_versions_increment_and_plans_are_retrievable(client, headers):
         "rescheduled": [],
     }
     assert plan["plan_payload"]["actions"] == first.json()["plan_payload"]["actions"]
-    assert plan["total_cost_cents"] <= 25_000_000
+    assert plan["total_cost_cents"] <= 250_000_000
     scores = [row["score"] for row in plan["plan_payload"]["verification_priority"]]
     assert scores and scores == sorted(scores, reverse=True)
     listed = client.get("/api/v1/recovery/plans?scenario_id=cyclone-demo").json()

@@ -25,7 +25,7 @@ def test_unconfigured_writes_are_disabled(settings, payload):
 def test_openapi_and_scenario_contract(client):
     assert client.get("/openapi.json").status_code == 200
     scenario = client.get("/api/v1/scenarios/cyclone-demo").json()
-    assert scenario["budget_cents"] == 25000000
+    assert scenario["budget_cents"] == 250000000
     assert scenario["available_crews"]["civil"] == 2
     assert client.get("/api/v1/scenarios/missing").status_code == 404
     assert len(client.get("/api/v1/observation-sources").json()) == 2

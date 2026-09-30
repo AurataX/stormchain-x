@@ -14,7 +14,7 @@ export function Legend() {
         </li>
       ))}
       <li><span className="dot dot-plan" aria-hidden /> Planned repair</li>
-      <li className="muted">Dashed: dependency · Rings: planned / selected · Synthetic locations</li>
+      <li className="muted">Shaded circle: impact zone by status · Glowing line: road · Dashed: dependency · Ring: planned / selected · Synthetic locations</li>
     </ul>
   );
 }

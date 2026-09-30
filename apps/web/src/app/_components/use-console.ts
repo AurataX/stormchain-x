@@ -8,12 +8,16 @@ import { useApi } from "@/lib/use-api";
 export const SCENARIO = "cyclone-demo";
 
 export function useConsole() {
-  const [asOf, setAsOf] = useState("");
+  const [asOf, setAsOfRaw] = useState("");
   const [selected, setSelected] = useState<string | null>(null);
   const [stale, setStale] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [refresh, setRefresh] = useState(0);
+  const setAsOf = (value: string) => {
+    setAsOfRaw(value);
+    setStale(true);
+  };
   const iso = asOf ? new Date(asOf).toISOString() : "";
   const at = iso ? `&as_of=${encodeURIComponent(iso)}` : "";
   const graph = useApi<Graph>(`/api/v1/infrastructure/graph?scenario_id=${SCENARIO}${at}`, refresh);

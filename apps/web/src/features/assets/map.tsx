@@ -3,8 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Graph } from "@/lib/types";
 import { loadGoogleMaps } from "./google-loader";
 import { bounds } from "./map-data";
-import { addMarkers } from "./map-markers";
-import { addLines } from "./map-lines";
+import { addLayers } from "./map-layers";
 
 type Props = { graph: Graph; planned: Set<string>; selected: string | null; onSelect: (id: string) => void };
 
@@ -30,14 +29,13 @@ export function AssetMap({ graph, planned, selected, onSelect }: Props) {
   }, []);
   useEffect(() => {
     if (!map) return;
-    const clearMarkers = addMarkers(map, graph, planned, selected, onSelect);
-    const clearLines = addLines(map, graph, planned, selected, onSelect);
+    const clear = addLayers(map, graph, planned, selected, onSelect);
     if (!fitted.current && graph.assets.length) {
       const [sw, ne] = bounds(graph);
       map.fitBounds({ west: sw[0], south: sw[1], east: ne[0], north: ne[1] }, 40);
       fitted.current = true;
     }
-    return () => { clearMarkers(); clearLines(); };
+    return clear;
   }, [map, graph, planned, selected, onSelect]);
   return <>
     <div ref={box} className="map" aria-label="Infrastructure map; keyboard alternative below." />
