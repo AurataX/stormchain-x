@@ -48,6 +48,16 @@ starting the missing API; verification passed with 55 tests and 4 PostgreSQL ski
 Ten browser tests now pass with real API and a labeled map mock, including light/dark
 360/768/1280px layouts and evidence/recalculation. Real Google map and full keyboard
 acceptance remain incomplete; see the latest handoff section.
+Repeated local API outage on 2026-09-30 was recovered by restarting the stopped
+backend on 8001; all four console GETs returned 200 again. Verification passed
+with 55 tests and 4 PostgreSQL skips; no application code change was needed.
+The replacement Google Maps key passed live Chrome initialization without reported
+Google Maps errors; full real-map visual, interaction and keyboard checks remain pending.
+Local production build verification then passed: four proxy GETs returned 200,
+10 browser tests passed with labeled Google mocks, and six live Google viewport/theme
+checks passed rendering and marker selection. Screenshot inspection confirmed desktop
+attribution. Backend gates passed with 55 tests and 4 PostgreSQL skips. Full real road
+interaction, keyboard navigation and measured contrast remain incomplete; no deployment.
 
 ## Phase 5 — evaluation, release, and demonstration
 

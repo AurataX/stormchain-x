@@ -41,7 +41,8 @@ Anyone who can open the console can write: local demo only, not production auth.
 
 ## NOT verified
 
-- Real Google basemap rendering is blocked by the supplied key's `ApiTargetBlockedMapError`.
+- Earlier real Google basemap checks were blocked by `ApiTargetBlockedMapError`;
+  the latest supplied key passed a live browser initialization smoke check below.
   Advanced marker integration is tested with an explicitly labeled mock, not a live map.
   Full keyboard focus order, real road clicks, Google attribution visibility, and measured
   contrast remain unverified. Reduced-motion preference was enabled in layout tests.
@@ -97,3 +98,71 @@ Anyone who can open the console can write: local demo only, not production auth.
 - Changed files: web package/lock and TypeScript config, new Playwright config/tests,
   asset map/loader/marker/line/summary modules, compact/map/data CSS, layout imports,
   constraints/evidence/console/legend components, and design/status/task/local-dev docs.
+
+## Repeated local API outage — 2026-09-30
+
+- Reproduced scenario proxy GET 502; direct readiness requests on 8000 and 8001
+  both refused connections. The configured API on 8001 was stopped.
+- Restarted `uvicorn app.main:app --host 127.0.0.1 --port 8001` with the existing
+  ignored console operator token and existing SQLite database; no bootstrap needed.
+  API remains running in a hidden background process for the current console.
+  PowerShell `Start-Process` failed with duplicate `Path`/`PATH` environment keys;
+  Python `subprocess.Popen` with `CREATE_NO_WINDOW` successfully started it.
+- Python urllib smoke through port 3000: graph, plans, scenario and observation
+  sources each returned 200; empty observation POST returned 422. Direct `/ready`
+  returned 200. The first smoke attempt ran before API startup and still saw 502.
+- `npm run typecheck` passed. `.venv/Scripts/python.exe scripts/verify.py` initially
+  gave 15 passed, 4 skipped and 40 temporary-directory permission errors; permitted
+  rerun passed with 55 tests and 4 PostgreSQL skips. Size, docs, schema, Ruff lint
+  and formatting passed. Existing httpx deprecation warning remains.
+- Changed `.gitignore` to exclude local API logs, this handoff and `docs/tasks.md`.
+  Existing changes to `next-env.d.ts` and untracked `pnpm-lock.yaml` were preserved.
+  No application code change was needed. Use `scripts/dev.ps1` for future sessions
+  so both services run together; starting only the console does not start the API.
+- Next incomplete task remains real Google basemap/roads and full keyboard
+  acceptance. No Docker testing or cloud changes were performed.
+
+## Updated Google Maps key — 2026-09-30
+
+- User supplied a replacement Maps JavaScript API key. Set
+  `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` in ignored `apps/web/.env.development.local`,
+  preserving the shared operator token. No key value is recorded here.
+- Live Playwright/Chrome smoke against port 3000 (no Google mock) found one
+  `.gm-style` map container and no reported Google `MapError`/`MapWarning` codes
+  or nonempty application alerts after an eight-second observation window.
+  This verifies initialization, not complete visual or interaction acceptance.
+- Initial sandbox browser launch failed; permitted rerun passed. No application
+  source changed; no cloud configuration changed. Changed this handoff and tasks;
+  local key configuration remains ignored. Full road/marker interactions, visible
+  attribution, keyboard navigation and real-map viewport checks remain incomplete.
+
+## Local production build verification — 2026-09-30
+
+- User clarified there is no deployed server and requested verification before
+  deployment. No external deployment or cloud configuration was performed.
+- Created ignored `.env.production.local` using the existing operator token and
+  Maps key, with explicit local `API_URL` on 8001. Development env files are not
+  loaded in production mode. No values were printed or committed.
+- `npm run build` first compiled but failed at the TypeScript worker with
+  sandbox `spawn EPERM`; permitted rerun passed. Started production Next.js via
+  `node node_modules/next/dist/bin/next start -H 127.0.0.1 -p 3001`; left running.
+- urllib GET smoke against port 3001: graph, plans, scenario and sources all 200.
+- `npx playwright test --config test-results/production.config.cjs`: 10 passed
+  against port 3001, with real API and explicitly mocked Google Maps. This covers
+  evidence persistence, stale-plan recalculation/comparison, marker lifecycle,
+  network/auth failure states and six viewport/theme combinations. The ignored
+  temporary config overrides only baseURL/output directory and uses existing tests.
+- Separate live Google Chrome check (no mock) passed 360/768/1280px in light/dark:
+  visible map, seven markers, marker selection opens inspector, one selected ring,
+  no horizontal overflow, Google error/warning codes or uncaught page errors.
+  Confirmed the script used the key from the production environment without
+  printing it. Screenshots are in ignored `apps/web/test-results`; inspected the
+  1280px light screenshot and confirmed rendered basemap and visible attribution.
+- `.venv/Scripts/python.exe scripts/verify.py`: 55 passed, 4 PostgreSQL skips;
+  size, docs, schema, Ruff lint and formatting passed. Existing httpx warning remains.
+- Changed local-development documentation, this handoff and tasks; Next regenerated
+  `apps/web/next-env.d.ts` during build. Production environment and browser artifacts
+  remain ignored. No application logic changed. This verifies a single local server
+  with SQLite, not Cloud Run/PostgreSQL, public authentication or remote key restrictions.
+- Next incomplete Phase 4 task: real road-overlay interaction and complete keyboard
+  focus/navigation acceptance; measured contrast remains unverified.

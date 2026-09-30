@@ -32,6 +32,26 @@ With both servers running and Chrome installed, run `npm run test:browser` from
 `apps/web`. These tests mock Google Maps explicitly and use the real local API;
 the workflow test writes labeled synthetic reports and new demo plan versions.
 
+For local production-mode verification, keep the API running on 8001 and configure
+ignored `apps/web/.env.production.local` with `API_URL=http://127.0.0.1:8001`,
+the same server-side `OPERATOR_TOKEN`, and `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`.
+The development environment files are not loaded by the production build.
+Keep the key out of source files. The browser Maps key is public by design;
+the operator token must remain server-side.
+
+From `apps/web`, run:
+
+```powershell
+npm run build
+node node_modules/next/dist/bin/next start -H 127.0.0.1 -p 3001
+```
+
+Open `http://127.0.0.1:3001`. Public Maps variables are embedded at build time;
+rebuild after changing them. The ignored local production file configures this
+single-machine check only. A future deployment must supply its own backend URL,
+operator credentials and domain-restricted Maps key through its environment.
+Local success does not establish remote deployment or production authorization.
+
 For a backend-only SQLite session:
 
 ```powershell
